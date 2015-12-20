@@ -18,6 +18,12 @@
                 Response.Write("</div>");
             } %>
     </div>
+    <div>
+        <%for (int i=1; i<=MaxPage; i++) {
+                Response.Write(string.Format("<a href='/Pages/ProductList.aspx?page={0}' {1}>{2}</a>",
+                    i, i == CurPage ? "class='selected'" : "", i));
+            } %>
+    </div>
     </form>
 </body>
 </html>
