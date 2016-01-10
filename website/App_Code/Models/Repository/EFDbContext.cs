@@ -9,8 +9,9 @@ using System.Data.Entity;
 /// </summary>
 namespace SportsStore.Models.Repository
 {
-    public class DataContext : DbContext
+    public class EFDbContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Routing;
 using SportsStore;
 using SportsStore.Models;
 using SportsStore.Models.Repository;
@@ -42,6 +43,14 @@ public partial class Pages_CartView : System.Web.UI.Page
         get
         {
             return (string)SessionHelper.Get(Session, SKEY.RETURN_URL);
+        }
+    }
+
+    public string CheckoutUrl
+    {
+        get
+        {
+            return RouteTable.Routes.GetVirtualPath(null, "checkout", null).VirtualPath;
         }
     }
 }
