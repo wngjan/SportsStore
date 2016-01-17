@@ -13,10 +13,40 @@ namespace SportsStore.Models.Repository
     public class Repository
     {
         private EFDbContext context = new EFDbContext();
+
         public IEnumerable<Product> Products
         {
             get { return context.Products; }
         }
+
+        public void SaveProduct(Product product)
+        {
+            if (product.id == 0) {
+                product = context.Products.Add(product);
+            } else {
+                Product dbProduct = context.Products.Find(product.id);
+                if (dbProduct == null) {
+                    dbProduct.name = product.name;
+                    dbProduct.description = product.description;
+                    dbProduct.price = product.price;
+                    dbProduct.category = product.category;
+                }
+            }
+            context.SaveChanges();
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            IEnumerable<Order> orders = context.Orders.Include(o => o.orderline_list.Select(ol => ol.Product))
+                .Where(o => o.orderline_list.Count(ol => ol.Product.id == product.id) > 0).ToArray();
+
+            foreach (Order order in orders) {
+                context.Orders.Remove(order);
+            }
+            context.Products.Remove(product);
+            context.SaveChanges();
+        }
+
 
         public IEnumerable<Order> Orders
         {
@@ -47,6 +77,5 @@ namespace SportsStore.Models.Repository
             }
             context.SaveChanges();
         }
-
     }
 }
